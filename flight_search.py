@@ -1,19 +1,15 @@
+import os
 import requests
 
 class FlightSearch:
-    def __init__(self):
-        pass
-
     def search_flights(self, city):
-        api_end_point = "https://tequila-api.kiwi.com/locations/query"
-        parameters = {
-            "term": f"{city}"
+        url = "https://tequila-api.kiwi.com/locations/query"
+        headers = {
+            "apikey": os.getenv("KIWI_API_KEY")
         }
-        header = {
-            "apikey": "Iak0yghjoest46eSGnmoQaAJHFo5YNUN",
-            "Content-Type": "application/json"
+        params = {
+            "term": city
         }
 
-        response = requests.get(url=api_end_point, params=parameters, headers=header)
-        data = response.json()['locations'][0]["code"]
-        return data
+        response = requests.get(url, headers=headers, params=params)
+        return response.json()["locations"][0]["code"]
